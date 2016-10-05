@@ -1,0 +1,111 @@
+<html>
+	<head>
+		<title> Home | GitHubCrawler </title>
+		<link rel="stylesheet" type="text/css" href="css/materialize.min.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	</head>
+	<body class="grey lighten-3">
+		<nav class="pink">
+			<div class="nav-wrapper">
+				<div class="row">
+					<div class="col m2">
+						<h4> <a href="#" class="brand-logo"> Github Crawler </a> </h4>
+					</div>
+					
+					<div class="col m4 offset-m1">
+						<form action="#" onsubmit="crawl()">
+							<div class="input-field">
+								<input type="search" id="username" placeholder="Enter a github username....." class="transparent" required>
+								<label for="search"><i class="material-icons">search</i></label>
+								<i class="material-icons">close</i>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<a href="https://github.com">
+				<h4 class="black-text"> Anil Kumar P </h4>
+				<h5 class="grey-text">anilkumar</h5>
+			</a>
+			<div class="divider"></div>
+			<div class="section" id="">
+				<div class="row">
+					<div class="card col m5 offset-m1">
+						<div class="card-content">
+							<a class="card-title" href="">
+								<strong class="pink-text">git-crawler</strong>
+							</a>
+							<p> Hello world project</p>
+						</div>
+						<div class="card-action">
+							<i class="material-icons tiny">as</i>
+							<span> NodeJS </span>
+							<span class="right grey-text text-darken-3">
+								<i class="material-icons tiny">star</i> 7
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-2.2.2.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript">
+		// $('#username').focus(function(){
+		// 	$(this).css('background-color', 'transparent');
+		// })
+		function crawl() {
+			var username = $('#username').val()
+			$('#username').val('')
+			console.log(username)
+			alert('wait')
+			$.post('/', {name: username}).success(function(response) {
+				console.log(response)
+				$('.container').html(' ')
+				if (response[0] == "success") {
+					res = response[1]
+					res.forEach(function(data) {
+						var head =	'<a href="https://github.com/' + data.username + '">' +
+										'<h4 class="black-text">' + data.fullname + '</h4>' +
+										'<h5 class="grey-text">' + data.username + '</h5>' +
+									'</a>' +
+									'<div class="divider"></div>' +
+									'<div class="section" id="' + data.username +'">' +
+									'</div>';
+						$('.container').append(head)
+						var count = 0
+						data.repos.forEach(function(repo) {
+							var card =	'<div class="card col m5 offset-m1">' +
+											'<div class="card-content">' +
+												'<a class="card-title" href="'+repo.link + '">' +
+													'<strong class="pink-text">' +  
+														repo.name +
+													'</strong>' +
+												'</a>' +
+												'<p>' + repo.description + '</p>' +
+											'</div>' +
+											'<div class="card-action">' +
+												'<span>' + repo.language + '</span>' +
+												'<span class="right grey-text text-darken-2">' +
+													'<i class="material-icons tiny">star</i>' +
+													repo.stars +
+												'</span>' +
+											'</div>' +
+										'</div>';
+							var temp = ++count % 2
+							if (temp == 1) {
+								$('#' + data.username).append('<div class="row"></div>')
+							}
+							$('#' + data.username + ' > .row').last().append(card);
+						})
+					})
+				}
+				
+			})
+			return false;
+		}
+	</script>
+</html>

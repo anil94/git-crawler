@@ -1,0 +1,16 @@
+{
+  "name": "github-crawler",
+  "version": "1.0.0",
+  "description": "Crawls through github and list the repos of a particular user and his followings...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anil",
+  "license": "MIT",
+  "dependencies" : {
+  	"express" : "latest",
+  	"request" : "latest",
+  	"cheerio" : "latest"
+  }
+}
